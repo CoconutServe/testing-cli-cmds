@@ -1,0 +1,27 @@
+{
+  "name": "testing-cli-cmds",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "create-coconutserve": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoconutServe/testing-cli-cmds.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CoconutServe/testing-cli-cmds/issues"
+  },
+  "homepage": "https://github.com/CoconutServe/testing-cli-cmds#readme",
+  "dependencies": {
+    "inquirer": "^12.11.1"
+  }
+}
