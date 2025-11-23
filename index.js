@@ -2,6 +2,8 @@
 import fs from "fs";
 import path from "path";
 import inquirer from "inquirer";
+import { fileURLToPath } from "url";
+import { execSync } from "child_process";
 
 // Read project name from CLI
 let projectName = process.argv[2];
@@ -43,7 +45,7 @@ async function askQuestions() {
 }
 
 function copyTemplate(src, dest) {
-    if (!fs.existsSync(dest)) fs.mkdirSync(dest);
+    if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
 
     const items = fs.readdirSync(src);
     for (const item of items) {
@@ -61,26 +63,33 @@ function copyTemplate(src, dest) {
 (async () => {
     const answers = await askQuestions();
 
-    const __dirname = path.dirname(new URL(import.meta.url).pathname);
+    // FIXED core issue: correct ES module dirname
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
     const templatePath = path.join(__dirname, "template");
+
+    // FIXED: define project path
     const projectPath = path.join(process.cwd(), projectName);
 
-    // Copy basic template
+    // Copy template
     copyTemplate(templatePath, projectPath);
 
-    // Add answer summary inside project
+    // Write result summary
     const summary = `
 AI Selected: ${answers.ai}
 Database Selected: ${answers.db}
 Install Dependencies: ${answers.install}
-  `;
-
+`;
     fs.writeFileSync(path.join(projectPath, "config-result.txt"), summary);
 
-    console.log(`Project "${projectName}" created successfully!`);
+    console.log(`✔ Project "${projectName}" created successfully!`);
 
     if (answers.install) {
         console.log("Installing dependencies...");
-        require("child_process").execSync("npm install", { cwd: projectPath, stdio: "inherit" });
+        execSync("npm install", {
+            cwd: projectPath,
+            stdio: "inherit",
+        });
     }
 })();

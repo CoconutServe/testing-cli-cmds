@@ -14,6 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/CoconutServe/testing-cli-cmds.git"
   },
+  "files": ["index.js", "template"],
   "keywords": [],
   "author": "",
   "license": "ISC",
